@@ -9,7 +9,7 @@ Don't warry about caching or others IO procedures, it manages them in _atomic_ w
 All what you need to know are 2 thinks:
 
 
-1. how istantiate the config-Manager: using the static method **getIstance()**
+* how istantiate the config-Manager: using the static method **getIstance()**
 
 ``` php
         <?php
@@ -19,7 +19,7 @@ All what you need to know are 2 thinks:
         ?>
 ```
 
-2. how you can manage your data:
+* how you can manage your data:
 using the methods defined by this interface:
 
 ``` php
