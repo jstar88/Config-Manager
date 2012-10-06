@@ -9,7 +9,7 @@ class ConfigManager
     public static $parseCount=array();
     
 
-    public static function getIstance($path,$cachePath='')
+    public static function getInstance($path,$cachePath='')
     {
         if (!isset(self::$extManagers[$path]))
         {
@@ -23,7 +23,7 @@ class ConfigManager
         }
         return self::$extManagers[$path];
     }
-    public static function cleanIstance($path)
+    public static function cleanInstance($path)
     {
         unset(self::$extManagers[$path]); 
     }
