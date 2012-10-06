@@ -9,7 +9,7 @@ Don't warry about caching or others IO procedures, it manages them in _atomic_ w
 All what you need to know are 2 thinks:
 
 
-* how istantiate the config-Manager: using the static method **getIstance()**
+* how istantiate the config-Manager: using the static method **getIstance()** with the data file as first parameter and (optionally but necessary for caching) the name that will have the cached data. 
 
 ``` php
         <?php
@@ -52,6 +52,13 @@ for example:
          $data->get('aKey'); 
         ?>
 ```
+## Extensions supported
+
+* XML: Extensible Markup Language
+* PHP: Hypertext Preprocessor
+* JSON: JavaScript Object Notation
+* INI
+* YAML: YAML Ain't Markup Language
 
 ## Specif extension standards
 Some types of markup language require to follow conventions to work on ConfigManager:
