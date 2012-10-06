@@ -11,13 +11,13 @@ Don't warry about caching or others IO procedures, it manages them in _atomic_ w
 All what you need to know are 2 thinks:
 
 
-* how istantiate the config-Manager: using the static method **getIstance()** with the data file as first parameter. 
+* how istantiate the config-Manager: using the static method **getInstance()** with the data file as first parameter. 
 
 ``` php
         <?php
          include 'ConfigManager.php';
          $myXmlConfigFile='myConfig.xml';
-         $data=ConfigManager::getIstance($myXmlConfigFile);
+         $data=ConfigManager::getInstance($myXmlConfigFile);
         ?>
 ```
 
@@ -50,13 +50,13 @@ for example:
         <?php
          include 'ConfigManager.php';
          $myXmlConfigFile='myConfig.xml';
-         $data=ConfigManager::getIstance($myXmlConfigFile);
+         $data=ConfigManager::getInstance($myXmlConfigFile);
          $data->get('aKey'); 
         ?>
 ```
 
 ## Caching
-To set on the caching you just need to provide the name of cached file(with php extension) as second parameter of _getIstance()_ method
+To set on the caching you just need to provide the name of cached file(with php extension) as second parameter of _getInstance()_ method
 
 for example:
 
