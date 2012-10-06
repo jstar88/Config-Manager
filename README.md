@@ -9,7 +9,7 @@ Don't warry about caching or others IO procedures, it manages them in _atomic_ w
 All what you need to know are 2 thinks:
 
 
-* how istantiate the config-Manager: using the static method **getIstance()** with the data file as first parameter and (optionally but necessary for caching) the name that will have the cached data. 
+* how istantiate the config-Manager: using the static method **getIstance()** with the data file as first parameter and (optionally but necessary for caching) the name that will have the cached data as second parameter. 
 
 ``` php
         <?php
