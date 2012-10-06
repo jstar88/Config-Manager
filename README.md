@@ -9,7 +9,7 @@ Don't warry about caching or others IO procedures, it manages them in _atomic_ w
 All what you need to know are 2 thinks:
 
 
-* how istantiate the config-Manager: using the static method **getIstance()** with the data file as first parameter and (optionally but necessary for caching) the name that will have the cached data as second parameter. 
+* how istantiate the config-Manager: using the static method **getIstance()** with the data file as first parameter. 
 
 ``` php
         <?php
@@ -52,6 +52,21 @@ for example:
          $data->get('aKey'); 
         ?>
 ```
+
+## Caching
+To set on the caching you just need to provide the name of cached file(with php extension) as second parameter of _getIstance()_ method
+
+for example:
+
+``` php
+        <?php
+         include 'ConfigManager.php';
+         $myXmlConfigFile='configs/myConfig.xml';
+         $data=ConfigManager::getIstance($myXmlConfigFile,$myXmlConfigFile.'php');
+         $data->get('aKey'); 
+        ?>
+```
+
 ## Extensions supported
 
 * XML
