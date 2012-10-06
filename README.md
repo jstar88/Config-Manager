@@ -1,7 +1,24 @@
 This is a configurations managers with automatic extension detection.
 
-To manage your data, you can use the methods defined by this interfaces:
+It is very easy and powerfull at the same time!
+Don't warry about caching or others IO procedures, it manages them in _atomic_ way: data is always ready, updated an served with a cache if possible.
+All what you need to know are 2 thinks:
 
+
+1. how istantiate the config-Manager: using the static method **getIstance()**
+
+``` php
+        <?php
+         include 'ConfigManager.php';
+         $myXmlConfigFile='myConfig.xml';
+         $data=ConfigManager::getIstance($myXmlConfigFile);
+        ?>
+```
+
+2. how you can manage your data:
+using the methods defined by this interface:
+
+``` php
         <?php
         interface ExtensionManager
         {
@@ -13,3 +30,15 @@ To manage your data, you can use the methods defined by this interfaces:
                 public function asArray();
         }
         ?>
+```
+
+for example:
+
+``` php
+        <?php
+         include 'ConfigManager.php';
+         $myXmlConfigFile='myConfig.xml';
+         $data=ConfigManager::getIstance($myXmlConfigFile);
+         $data->get('aKey'); 
+        ?>
+```
