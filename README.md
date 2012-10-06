@@ -62,7 +62,7 @@ for example:
         <?php
          include 'ConfigManager.php';
          $myXmlConfigFile='configs/myConfig.xml';
-         $data=ConfigManager::getIstance($myXmlConfigFile,$myXmlConfigFile.'php');
+         $data=ConfigManager::getIstance($myXmlConfigFile,$myXmlConfigFile.'.php');
          $data->get('aKey'); 
         ?>
 ```
