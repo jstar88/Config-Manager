@@ -54,11 +54,12 @@ for example:
 ```
 ## Extensions supported
 
-* XML: Extensible Markup Language
-* PHP: Hypertext Preprocessor
-* JSON: JavaScript Object Notation
+* XML
+* PHP
+* JSON
 * INI
-* YAML: YAML Ain't Markup Language
+* YAML (working on)
+* MYSQL (working on)
 
 ## Specif extension standards
 Some types of markup language require to follow conventions to work on ConfigManager:
