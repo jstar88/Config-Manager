@@ -1,7 +1,11 @@
 This is a configurations managers with automatic extension detection.
 
 It is very easy and powerfull at the same time!
+
+
 Don't warry about caching or others IO procedures, it manages them in _atomic_ way: data is always ready, updated an served with a cache if possible.
+
+
 All what you need to know are 2 thinks:
 
 
