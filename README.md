@@ -1,3 +1,5 @@
+## Introduction
+
 This is a configurations managers with automatic extension detection.
 
 It is very easy and powerfull at the same time!
