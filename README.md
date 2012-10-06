@@ -26,11 +26,17 @@ using the methods defined by this interface:
         <?php
         interface ExtensionManager
         {
+                //return a value stored with the key passed as param
                 public function get($key);
-                public function delete($key);      
+                //delete a value stored with the key passed as param 
+                public function delete($key);
+                //store an value that can be an object,array or basic type in the corrispective key, or store all variables inside an array or object passed like key  
                 public function set($key, $value=false);
+                //like before, but this time you can also add new key
                 public function add($key, $value=false);
+                //return true if the corrispective value exist
                 public function exist($key);
+                //return an associative array of key,value of all data
                 public function asArray();
         }
         ?>
