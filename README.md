@@ -52,3 +52,28 @@ for example:
          $data->get('aKey'); 
         ?>
 ```
+
+## Specif extension standards
+Some types of markup language require to follow conventions to work on ConfigManager:
+* XML: Extensible Markup Language
+ Must respect the format:
+
+``` xml
+     <?xml version="1.0"?>
+    <configurations>
+        <config>
+            <name>a key </name>
+            <value>a value </value>
+        </config>
+    <configurations>
+```
+* PHP: Hypertext Preprocessor 
+ Must have defined a variable _$config_ :
+
+``` php
+        <?php
+         $config=array(
+         'a key' => 'a value'
+         );
+        ?>
+```
