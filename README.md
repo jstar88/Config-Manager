@@ -87,7 +87,7 @@ for example:
 * YAML
 * MYSQL
 
-## Specif extension standards
+## Extension standards
 Some types of markup language require to follow conventions to work on ConfigManager:
 * _XML_:
  Must respect the format:
