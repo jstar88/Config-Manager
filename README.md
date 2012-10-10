@@ -72,7 +72,7 @@ for example:
 ## Cache systems supported
 
 * PHP
-* MYSQL - MEMORY Storage Engine
+* MYSQL - MEMORY Storage Engine (working on)
 * MEMCACHE (working on)
 * MEMCACHED (working on)
 * APC (working on)
