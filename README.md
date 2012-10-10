@@ -69,7 +69,7 @@ for example:
         ?>
 ```
 
-## Cache systems supported
+## Compatible cache systems 
 
 * PHP
 * MYSQL - MEMORY Storage Engine (working on)
@@ -78,7 +78,7 @@ for example:
 * APC (working on)
 * XCACHE (working on)
 
-## Extensions supported
+## Compatible data formats
 
 * XML
 * PHP
