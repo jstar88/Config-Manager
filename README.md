@@ -32,9 +32,9 @@ using the methods defined by this interface:
                 public function get($key);
                 //delete a value stored with the key passed as param 
                 public function delete($key);
-                //store an value that can be an object,array or basic type in the corrispective key, or store all variables inside an array or object passed like key  
+                //store an value that can be an object,array or basic type in the corrispective existing key, or store all variables inside an array or object passed like key  
                 public function set($key, $value=false);
-                //like before, but this time you can also add new key
+                //like before, but this time you can add new key only if not exist
                 public function add($key, $value=false);
                 //return true if the corrispective value exist
                 public function exist($key);
@@ -75,8 +75,8 @@ for example:
 * PHP
 * JSON
 * INI
-* YAML (working on)
-* MYSQL (working on)
+* YAML
+* MYSQL
 
 ## Specif extension standards
 Some types of markup language require to follow conventions to work on ConfigManager:
@@ -103,7 +103,7 @@ Some types of markup language require to follow conventions to work on ConfigMan
         ?>
 ```
 * MYSQL
- You need a configuration manager with database informations like
+ You need a configuration file with database informations like
  
  ``` php
       <?php
