@@ -102,3 +102,20 @@ Some types of markup language require to follow conventions to work on ConfigMan
          );
         ?>
 ```
+* MYSQL
+ You need a configuration manager with database informations like
+ 
+ ``` php
+      <?php
+         $config=array(
+            'server' => 'localhost',
+            'user' =>'root',
+            'pass' => '',
+            'name' => 'game',
+            'table' => 'config',
+            'key' => 'config_name',
+            'value' => 'config_value'
+         );
+      ?>
+```
+ 
