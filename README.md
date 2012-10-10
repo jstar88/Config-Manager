@@ -69,6 +69,14 @@ for example:
         ?>
 ```
 
+## Cache systems supported
+
+* PHP
+* MEMCACHE (working on)
+* MEMCACHED (working on)
+* APC (working on)
+* XCACHE (working on)
+
 ## Extensions supported
 
 * XML
@@ -80,7 +88,7 @@ for example:
 
 ## Specif extension standards
 Some types of markup language require to follow conventions to work on ConfigManager:
-* XML: Extensible Markup Language
+* _XML_:
  Must respect the format:
 
 ``` xml
@@ -92,7 +100,7 @@ Some types of markup language require to follow conventions to work on ConfigMan
         </config>
     <configurations>
 ```
-* PHP: Hypertext Preprocessor 
+* _PHP_: 
  Must have defined a variable _$config_ :
 
 ``` php
@@ -102,7 +110,7 @@ Some types of markup language require to follow conventions to work on ConfigMan
          );
         ?>
 ```
-* MYSQL
+* _MYSQL_:
  You need a configuration file with database informations like
  
  ``` php
