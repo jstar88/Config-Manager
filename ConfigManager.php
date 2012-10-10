@@ -1,8 +1,15 @@
 <?php
-include('interfaces/ExtensionManager.php');
-include('SafeIO.php');
-include('extension_managers/Manager.php');
-include('extension_managers/CacheManager.php');
+define('ROOT',dirname(__file__) . DIRECTORY_SEPARATOR);
+define('MANAGERS',ROOT.'extension_managers'.DIRECTORY_SEPARATOR);
+define('UTILS',ROOT.'utils'.DIRECTORY_SEPARATOR);
+define('LIBS',ROOT.'libs'.DIRECTORY_SEPARATOR);
+define('INTERFACES',ROOT.'interfaces'.DIRECTORY_SEPARATOR);
+
+include(INTERFACES.'ExtensionManager.php');
+include(UTILS.'SafeIO.php');
+include(UTILS.'DataFormat.php');
+include(MANAGERS.'Manager.php');
+include(MANAGERS.'CacheManager.php');
 class ConfigManager
 {
     private static $extManagers;
@@ -16,7 +23,7 @@ class ConfigManager
             $ar = explode('.', $path);
             $ext = $ar[count($ar) - 1];
             $name = ucfirst(strtolower($ext)) . 'Manager';
-            require ("extension_managers/$name.php");
+            require_once (MANAGERS."$name.php");
             $class=($cachePath != '')?new CacheManager($cachePath,new $name($path)):new $name($path);
             self::$extManagers[$path] = $class;
             return $class;

@@ -1,5 +1,5 @@
 <?php
-include_once 'PhpManager.php';
+require_once (MANAGERS.'PhpManager.php');
 class CacheManager extends PhpManager
 {
     private $primitive;
@@ -11,27 +11,27 @@ class CacheManager extends PhpManager
     }
     protected function openConfig($path)
     {
-        if (!file_exists(parent::getPath()))
+        if (!file_exists($path))
         {
+            parent::add_config( $this->primitive->asArray());
             parent::saveConfig();
-            parent::add( $this->primitive->asArray());
         }
         return parent::openConfig($path);
     }
-    public function add($key, $value = false)
+    public function add_config($key, $value = false)
     {
+        parent::add_config($key,$value);
         $this->primitive->add($key, $value);
-        parent::add($key,$value);
     }
-    public function set($key, $value = false)
+    public function set_config($key, $value = false)
     {
+        parent::set_config($key,$value);
         $this->primitive->set($key, $value);
-        parent::set($key,$value);
     }
-    public function delete($key)
+    public function delete_config($key)
     {
+        parent::delete_config($key);
         $this->primitive->delete($key);
-        parent::delete($key);
     }
 }
 

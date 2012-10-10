@@ -2,52 +2,67 @@
 
 class XmlManager extends Manager
 {
-    private $config;
 
-    public function get($key)
+    //----  methods of interfaces ----
+    public function get_config($key)
     {
-        parent::checkParse();        
-        return $this->un_serialize((string) $this->get_xml_entity($key)->value);
+        return DataFormat::unserialize((string )$this->get_xml_entity($key)->value);
     }
-    public function delete($key)
+    public function delete_config($key)
     {
-        parent::checkParse();  
-        $seg=$this->get_xml_entity($key);
-        $dom=dom_import_simplexml($seg);
+        $seg = $this->get_xml_entity($key);
+        $dom = dom_import_simplexml($seg);
         $dom->parentNode->removeChild($dom);
-        parent::saveConfig();        
     }
-    public function exist($key)
+    public function asArray_config()
     {
-        parent::checkParse();        
-        try
-        {
-            $this->get_xml_entity($key,false);
-        }
-        catch (Exception $e) 
-        {
-            return false;    
-        } 
-        return true;
-    }
-    public function asArray()
-    {
-        parent::checkParse();
         $config = array();
         $x = parent::getConfig()->children();
         foreach ($x as $xmlObject)
         {
-            $string=(string )$xmlObject->value;           
-            $config[(string )$xmlObject->name] = $this->un_serialize($string);
+            $string = (string )$xmlObject->value;
+            $config[(string )$xmlObject->name] = DataFormat::unserialize($string);
         }
         return $config;
     }
-    private function un_serialize($string)
+    public function exist_config($key)
     {
-        error_reporting(E_ALL ^ E_NOTICE);
-        $var=  unserialize($string); 
-        return ($var=== false)? $string : $var;       
+        try
+        {
+            $this->get_xml_entity($key);
+        }
+        catch (exception $e)
+        {
+            return false;
+        }
+        return true;
     }
+    //--------------------------------
+
+    //---- override ----
+
+    protected function assign($key, $value, $can_add)
+    {
+        $this->get_xml_entity($key, $can_add)->value = DataFormat::serialize($value);
+    }
+    protected function decodeConfig($content)
+    {
+        $config = simplexml_load_string($content);
+        if ($config === false)
+            throw new Exception('Error parsing xml file');
+        return $config;
+    }
+    protected function encodeConfig($config)
+    {
+        $content = $config->asXML();
+        if ($content === false)
+        {
+            throw new Exception('Error: there are syntax errors on xml file');
+        }
+        return $content;
+    }
+
+    //------------------
 
     /**
      * xml->get_xml_entity()
@@ -99,30 +114,6 @@ class XmlManager extends Manager
             throw new Exception('there is an error in the xpath query');
         }
         return $result;
-    }
-    protected function assign($key,$value,$can_add)
-    {
-        if(is_array($value) || is_object($value))
-        {
-            $value=serialize($value);
-        }
-        $this->get_xml_entity($key, $value,$can_add)->value = $value; 
-    }
-    protected function decodeConfig($content)
-    {
-        $config = simplexml_load_string($content);
-        if ($config === false)
-            throw new Exception('Error parsing xml file');
-        return $config;
-    }
-    protected function encodeConfig($config)
-    {
-        $content = $config->asXML();
-        if ($content === false)
-        {
-            throw new Exception('Error: there are syntax errors on xml file');
-        }
-        return $content;
     }
 }
 

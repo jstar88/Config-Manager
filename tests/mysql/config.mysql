@@ -1,0 +1,11 @@
+<?php
+	$config=array(
+    'server' => 'localhost',
+    'user' =>'root',
+    'pass' => '',
+    'name' => 'game',
+    'table' => 'config',
+    'key' => 'config_name',
+    'value' => 'config_value'
+    );
+?>

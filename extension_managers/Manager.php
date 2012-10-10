@@ -9,36 +9,76 @@ class Manager implements ExtensionManager
     {
         $this->path = $path;
     }
-    public function get($key)
+
+    //----  methods of interfaces ----
+    public function set($key, $value = false)
     {
         $this->checkParse();
-        return $this->config[$key];
+        $this->set_config($key,$value);
+        $this->saveConfig();
     }
     public function add($key, $value = false)
     {
         $this->checkParse();
-        $this->write_config($key, $value, true);
+        $this->add_config($key,$value);
+        $this->saveConfig();
+    }
+    public function get($key)
+    {
+        $this->checkParse();
+        return $this->get_config($key);
     }
     public function asArray()
     {
         $this->checkParse();
-        return clone $this->config;
-    }
-    public function set($key, $value = false)
-    {
-        $this->checkParse();
-        $this->write_config($key, $value, false);
-    }
-    public function delete($key)
-    {
-        $this->checkParse();
-        unset($this->config[$key]);
+        return $this->asArray_config();
     }
     public function exist($key)
     {
         $this->checkParse();
+        return $this->exist_config($key);
+    }
+    public function delete($key)
+    {
+        $this->checkParse();
+        $this->delete_config($key);
+        $this->saveConfig();
+    }
+    //--------------------------------
+    //---- Auto updated functions ----
+    public function set_config($key, $value = false)
+    {
+        $this->write_config($key, $value, false);
+    }
+    public function add_config($key, $value = false)
+    {
+        $this->write_config($key, $value, true);
+    }
+    public function get_config($key)
+    {
+        if (!$this->exist_config($key))
+        {
+            throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
+        }
+        return $this->config[$key];
+    }
+    public function asArray_config()
+    {
+        return $this->config;
+    }
+    public function exist_config($key)
+    {
         return isset($this->config[$key]);
     }
+    public function delete_config($key)
+    {
+        if (!$this->exist_config($key))
+        {
+            throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
+        }
+        unset($this->config[$key]);
+    }
+    //---------------------------------
     protected function write_config($config_name, $config_value, $can_add)
     {
 
@@ -46,24 +86,35 @@ class Manager implements ExtensionManager
         {
             foreach ($config_name as $key => $value)
             {
-                if (!isset($key) || $can_add)
+                if (!$this->exist_config($key) && !$can_add)
                 {
-                    $this->assign($key,$value,$can_add);
+                    throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
                 }
+                if ($this->exist_config($key) && $can_add)
+                {
+                    throw new Exception(sprintf('Item with id "%s" already exists.', $key));
+                }
+                $this->assign($key, $value, $can_add);
+
             }
         }
         else
         {
-            if (!isset($config_name) || $can_add)
+            if (!$this->exist_config($config_name) && !$can_add)
             {
-                $this->assign($config_name,$config_value,$can_add);
+                throw new Exception(sprintf('Item with id "%s" does not exists.', $config_name));
             }
+            if ($this->exist_config($config_name) && $can_add)
+            {
+                throw new Exception(sprintf('Item with id "%s" already exists.', $config_name));
+            }
+            $this->assign($config_name, $config_value, $can_add);
+
         }
-        $this->saveConfig();
     }
-    protected function assign($key,$value,$can_add)
+    protected function assign($key, $value, $can_add)
     {
-        $this->config[$key] = $value;    
+        $this->config[$key] = $value;
     }
     protected function checkParse()
     {
