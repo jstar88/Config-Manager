@@ -69,15 +69,16 @@ for example:
         ?>
 ```
 
-## Cache systems supported
+## Compatible cache systems 
 
 * PHP
+* MYSQL - MEMORY Storage Engine (working on)
 * MEMCACHE (working on)
 * MEMCACHED (working on)
 * APC (working on)
 * XCACHE (working on)
 
-## Extensions supported
+## Compatible data formats
 
 * XML
 * PHP
@@ -86,7 +87,7 @@ for example:
 * YAML
 * MYSQL
 
-## Specif extension standards
+## Extensions standard
 Some types of markup language require to follow conventions to work on ConfigManager:
 * _XML_:
  Must respect the format:
