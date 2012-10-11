@@ -14,18 +14,19 @@ class Manager implements ExtensionManager
     public function set($key, $value = false)
     {
         $this->checkParse();
-        $this->set_config($key,$value);
+        $this->set_config($key, $value);
         $this->saveConfig();
     }
     public function add($key, $value = false)
     {
         $this->checkParse();
-        $this->add_config($key,$value);
+        $this->add_config($key, $value);
         $this->saveConfig();
     }
     public function get($key)
     {
         $this->checkParse();
+        $this->checkExist($key);
         return $this->get_config($key);
     }
     public function asArray()
@@ -41,44 +42,51 @@ class Manager implements ExtensionManager
     public function delete($key)
     {
         $this->checkParse();
+        $this->checkExist($key);
         $this->delete_config($key);
         $this->saveConfig();
     }
     //--------------------------------
     //---- Auto updated functions ----
-    public function set_config($key, $value = false)
+    protected function set_config($key, $value = false)
     {
         $this->write_config($key, $value, false);
     }
-    public function add_config($key, $value = false)
+    protected function add_config($key, $value = false)
     {
         $this->write_config($key, $value, true);
     }
-    public function get_config($key)
+    protected function get_config($key)
     {
-        if (!$this->exist_config($key))
-        {
-            throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
-        }
         return $this->config[$key];
     }
-    public function asArray_config()
+    protected function asArray_config()
     {
         return $this->config;
     }
-    public function exist_config($key)
+    protected function exist_config($key)
     {
         return isset($this->config[$key]);
     }
-    public function delete_config($key)
+    protected function delete_config($key)
+    {
+        unset($this->config[$key]);
+    }
+    //---------------------------------
+    protected function checkExist($key)
     {
         if (!$this->exist_config($key))
         {
             throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
         }
-        unset($this->config[$key]);
     }
-    //---------------------------------
+    protected function checkNotExist($key)
+    {
+        if ($this->exist_config($key))
+        {
+            throw new Exception(sprintf('Item with id "%s" already exists.', $key));
+        }
+    }
     protected function write_config($config_name, $config_value, $can_add)
     {
 
@@ -86,13 +94,13 @@ class Manager implements ExtensionManager
         {
             foreach ($config_name as $key => $value)
             {
-                if (!$this->exist_config($key) && !$can_add)
+                if (!$can_add)
                 {
-                    throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
+                    $this->checkExist($key);
                 }
-                if ($this->exist_config($key) && $can_add)
+                else
                 {
-                    throw new Exception(sprintf('Item with id "%s" already exists.', $key));
+                    $this->checkNotExist($key);
                 }
                 $this->assign($key, $value, $can_add);
 
@@ -100,13 +108,13 @@ class Manager implements ExtensionManager
         }
         else
         {
-            if (!$this->exist_config($config_name) && !$can_add)
+            if (!$can_add)
             {
-                throw new Exception(sprintf('Item with id "%s" does not exists.', $config_name));
+                $this->checkExist($config_name);
             }
-            if ($this->exist_config($config_name) && $can_add)
+            else
             {
-                throw new Exception(sprintf('Item with id "%s" already exists.', $config_name));
+                $this->checkNotExist($config_name);
             }
             $this->assign($config_name, $config_value, $can_add);
 
@@ -127,7 +135,7 @@ class Manager implements ExtensionManager
     {
         return $this->path;
     }
-    protected function getConfig()
+    protected function &getConfig()
     {
         return $this->config;
     }

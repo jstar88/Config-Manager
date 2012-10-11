@@ -13,7 +13,7 @@ class MysqlManager extends Manager
 
     //----  methods of interfaces ----
 
-    public function get_config($key)
+    protected function get_config($key)
     {
         $key = mysql_real_escape_string($key);
         $key_name = $this->getPath()->get('key');
@@ -26,9 +26,8 @@ class MysqlManager extends Manager
             throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
         $result = mysql_fetch_array($result);
         return DataFormat::unserialize(stripcslashes($result[$key_value]));
-
     }
-    public function asArray_config()
+    protected function asArray_config()
     {
         $key_name = $this->getPath()->get('key');
         $key_value = $this->getPath()->get('value');
@@ -40,17 +39,21 @@ class MysqlManager extends Manager
         }
         return $info;
     }
-    public function exist_config($key)
+    protected function exist_config($key)
     {
         $key_name = $this->getPath()->get('key');
         $key_value = $this->getPath()->get('value');
         $result = $this->doquery("SELECT $key_value FROM {{table}} WHERE $key_name = '$key';");
-        return mysql_num_rows($result) > 0;
+        return mysql_num_rows($result) == 1;
     }
-    public function delete_config($key)
+    protected function delete_config($key)
     {
         $key_name = $this->getPath()->get('key');
         $key_value = $this->getPath()->get('value');
+        if(!$this->exist_config($key))
+        {
+            throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
+        }
         $this->doquery("DELETE FROM {{table}} WHERE $key_name = '$key'");
         if(isset($this->addList[$key]))
             unset($this->addList[$key]);
@@ -60,7 +63,14 @@ class MysqlManager extends Manager
     //--------------------------------
 
     //---- override ----
-
+    protected function checkExist($key)
+    {
+        //do nothing
+    }
+    protected function checkNotExist($key)
+    {
+        //do nothing
+    }
     protected function assign($key, $value, $can_add)
     {
         if ($can_add)
@@ -112,7 +122,6 @@ class MysqlManager extends Manager
     }
     private function doquery($query)
     {
-        //echo $query.'<br>';
         $sql = str_replace("{{table}}", $this->getPath()->get("table"), $query);
         $sqlquery = mysql_query($sql) or $this->debug(mysql_error() . "<br />$sql<br />", "SQL Error");
         return $sqlquery;

@@ -18,17 +18,17 @@ class CacheManager extends PhpManager
         }
         return parent::openConfig($path);
     }
-    public function add_config($key, $value = false)
+    protected function add_config($key, $value = false)
     {
         parent::add_config($key,$value);
         $this->primitive->add($key, $value);
     }
-    public function set_config($key, $value = false)
+    protected function set_config($key, $value = false)
     {
         parent::set_config($key,$value);
         $this->primitive->set($key, $value);
     }
-    public function delete_config($key)
+    protected function delete_config($key)
     {
         parent::delete_config($key);
         $this->primitive->delete($key);

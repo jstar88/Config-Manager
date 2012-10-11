@@ -4,17 +4,17 @@ class XmlManager extends Manager
 {
 
     //----  methods of interfaces ----
-    public function get_config($key)
+    protected function get_config($key)
     {
         return DataFormat::unserialize((string )$this->get_xml_entity($key)->value);
     }
-    public function delete_config($key)
+    protected function delete_config($key)
     {
         $seg = $this->get_xml_entity($key);
         $dom = dom_import_simplexml($seg);
         $dom->parentNode->removeChild($dom);
     }
-    public function asArray_config()
+    protected function asArray_config()
     {
         $config = array();
         $x = parent::getConfig()->children();
@@ -25,7 +25,7 @@ class XmlManager extends Manager
         }
         return $config;
     }
-    public function exist_config($key)
+    protected function exist_config($key)
     {
         try
         {
@@ -40,7 +40,14 @@ class XmlManager extends Manager
     //--------------------------------
 
     //---- override ----
-
+    protected function checkExist($key)
+    {
+        //do nothing
+    }
+    protected function checkNotExist($key)
+    {
+        //do nothing
+    }
     protected function assign($key, $value, $can_add)
     {
         $this->get_xml_entity($key, $can_add)->value = DataFormat::serialize($value);
