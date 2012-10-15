@@ -106,6 +106,37 @@ Sometimes you need to manage configuration in a database or save it in caching s
 in these cases you must provide to ConfigManager the path of the minimal required configuration to do the job as first parameter.
 The syntax is the same, but what must be in the configuration file is declared by the Extension standard chapter
 
+Example: managing database
+
+_main.php_
+
+``` php
+    <?php
+    
+    $config = ConfigManager::getInstance('config.pdo','cache.php');
+    
+    ?>
+```
+
+_config.pdo_
+
+``` php
+    <?php
+
+    $config = array(
+      'db_type'        => 'mysql',
+      'db_host'        => 'localhost',
+      'db_name'        => 'game',
+      'user_name'      => 'root',
+      'user_password'  => '',
+      'driver_options' => array(),
+      'table'          => 'config',
+      'key'            => 'config_name',
+      'value'          => 'config_value'
+    );
+
+?>
+```
 
 ## Extensions standard
 Some types of markup language require to follow conventions to work on ConfigManager:
