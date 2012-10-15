@@ -1,3 +1,5 @@
+# Easy usage tutorial:
+
 ## Introduction
 
 This is a configurations managers with automatic extension detection.
@@ -68,6 +70,10 @@ for example:
          $data->get('aKey'); 
         ?>
 ```
+## Working with third-party datastores
+Sometimes you need to manage configuration in a database or save it in caching system like Memcached:
+in these cases you must provide to ConfigManager the path of the minimal required configuration to do the job as first parameter.
+The syntax is the same, but what must be in the configuration file is declared by the Extension standard chapter
 
 ## Compatible cache systems 
 
@@ -143,4 +149,7 @@ Some types of markup language require to follow conventions to work on ConfigMan
     ?>
 
 ```
+
+# Advanced tutorial:
+
  
