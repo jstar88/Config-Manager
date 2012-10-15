@@ -71,7 +71,7 @@ for example:
 
 ## Compatible cache systems 
 
-* PHP
+* PHP and all others compatible data formats
 * MYSQL - MEMORY Storage Engine (working on)
 * MEMCACHE (working on)
 * MEMCACHED (working on)
@@ -85,7 +85,18 @@ for example:
 * JSON
 * INI
 * YAML
-* MYSQL
+* PDO
+  * CUBRID
+  * MS SQL
+  * Firebird/Interbase
+  * IBM
+  * Informix
+  * MySQL
+  * Oracle
+  * ODBC - DB2
+  * PostgreSQL
+  * SQLite
+  * 4D
 
 ## Extensions standard
 Some types of markup language require to follow conventions to work on ConfigManager:
@@ -111,20 +122,25 @@ Some types of markup language require to follow conventions to work on ConfigMan
          );
         ?>
 ```
-* _MYSQL_:
+* _PDO_:
  You need a configuration file with database informations like
  
  ``` php
-      <?php
-         $config=array(
-            'server' => 'localhost',
-            'user' =>'root',
-            'pass' => '',
-            'name' => 'game',
-            'table' => 'config',
-            'key' => 'config_name',
-            'value' => 'config_value'
-         );
-      ?>
+    <?php
+
+    $config = array(
+      'db_type'        => 'mysql',
+      'db_host'        => 'localhost',
+      'db_name'        => 'game',
+      'user_name'      => 'root',
+      'user_password'  => '',
+      'driver_options' => array(),
+      'table'          => 'config',
+      'key'            => 'config_name',
+      'value'          => 'config_value'
+    );
+
+    ?>
+
 ```
  
