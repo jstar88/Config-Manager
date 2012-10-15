@@ -56,7 +56,7 @@ for example:
 ```
 
 ## Caching
-To set on the caching you just need to provide the name of cached file(with php extension) as second parameter of _getInstance()_ method
+To set on the caching you just need to provide the name of cached file(with php or preferred format extension) as second parameter of _getInstance()_ method
 
 for example:
 
