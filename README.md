@@ -104,7 +104,7 @@ for example:
 ## Working with third-party datastores
 Sometimes you need to manage configuration in a database or save it in caching system like Memcached:
 in these cases you must provide to ConfigManager the path of the minimal required configuration to do the job as first parameter (and/or as second parameter for caching).
-The syntax is the same, but what must be in the configuration file is declared by the Extension standard chapter
+The syntax is the same, but what must be wrote in the configuration file is declared by the Extension standard chapter
 
 Example: managing database
 
