@@ -1,4 +1,35 @@
-# Easy usage tutorial:
+# Specifications
+
+## Compatible cache systems 
+
+* PHP and all others compatible data formats
+* MYSQL - MEMORY Storage Engine (working on)
+* MEMCACHE (working on)
+* MEMCACHED (working on)
+* APC (working on)
+* XCACHE (working on)
+
+## Compatible data formats
+
+* XML
+* PHP
+* JSON
+* INI
+* YAML
+* PDO
+  * CUBRID
+  * MS SQL
+  * Firebird/Interbase
+  * IBM
+  * Informix
+  * MySQL
+  * Oracle
+  * ODBC - DB2
+  * PostgreSQL
+  * SQLite
+  * 4D
+
+# Basic usage tutorial:
 
 ## Introduction
 
@@ -75,34 +106,6 @@ Sometimes you need to manage configuration in a database or save it in caching s
 in these cases you must provide to ConfigManager the path of the minimal required configuration to do the job as first parameter.
 The syntax is the same, but what must be in the configuration file is declared by the Extension standard chapter
 
-## Compatible cache systems 
-
-* PHP and all others compatible data formats
-* MYSQL - MEMORY Storage Engine (working on)
-* MEMCACHE (working on)
-* MEMCACHED (working on)
-* APC (working on)
-* XCACHE (working on)
-
-## Compatible data formats
-
-* XML
-* PHP
-* JSON
-* INI
-* YAML
-* PDO
-  * CUBRID
-  * MS SQL
-  * Firebird/Interbase
-  * IBM
-  * Informix
-  * MySQL
-  * Oracle
-  * ODBC - DB2
-  * PostgreSQL
-  * SQLite
-  * 4D
 
 ## Extensions standard
 Some types of markup language require to follow conventions to work on ConfigManager:
