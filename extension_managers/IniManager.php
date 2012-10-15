@@ -9,7 +9,8 @@ class IniManager extends Manager
             $key = array('default', $key);
         }
         $section = parent::get_config($key[0]);
-        return $section[$key[1]];
+        $value = $section[$key[1]];
+        return DataFormat::unserialize($value);
 
     }
     protected function assign($key, $value, $can_add)
@@ -25,7 +26,7 @@ class IniManager extends Manager
         {
             $sectionName = 'default';
         }
-
+        $value=DataFormat::serialize($value);
         if (parent::exist_config($sectionName))
         {
             $section = parent::get_config($sectionName);

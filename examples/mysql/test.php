@@ -1,7 +1,7 @@
 <?php
 
 include ('../../ConfigManager.php');
-$config = ConfigManager::getInstance('config.mysql','cache.config.php');
+$config = ConfigManager::getInstance('config.mysql','cache.php');
 
 
 if($config->exist('wines')) //cached

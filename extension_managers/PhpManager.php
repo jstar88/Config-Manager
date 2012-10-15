@@ -1,9 +1,11 @@
 <?php
-
+require_once(EXCEPTIONS.'FileNotExistException.php');
 class PhpManager extends Manager
 {
-    protected function openConfig($path)
+    protected function onlyOpenConfig($path)
     {
+        if(!file_exists($path))
+            throw new FileNotExistException($path);
         require $path;
         return $config;
     }

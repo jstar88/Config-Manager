@@ -1,13 +1,15 @@
 <?php
-
+require_once (EXCEPTIONS . 'ItemAlreadyExistException.php');
+require_once (EXCEPTIONS . 'ItemNotExistException.php');
 class Manager implements ExtensionManager
 {
     private $config;
     private $path;
 
-    public function __construct($path)
+    public function __construct($path,ExtensionManager $driver = null)
     {
         $this->path = $path;
+        $this->config=array();
     }
 
     //----  methods of interfaces ----
@@ -77,14 +79,14 @@ class Manager implements ExtensionManager
     {
         if (!$this->exist_config($key))
         {
-            throw new Exception(sprintf('Item with id "%s" does not exists.', $key));
+            throw new ItemNotExistException($key);
         }
     }
     protected function checkNotExist($key)
     {
         if ($this->exist_config($key))
         {
-            throw new Exception(sprintf('Item with id "%s" already exists.', $key));
+            throw new ItemAlreadyExistException($key);
         }
     }
     protected function write_config($config_name, $config_value, $can_add)
@@ -135,15 +137,34 @@ class Manager implements ExtensionManager
     {
         return $this->path;
     }
-    protected function &getConfig()
+    protected function getConfig()
     {
         return $this->config;
     }
-    protected function saveConfig()
+    protected function saveConfig($config = null)
     {
+        if($config !== null) $this->config=$config;
         SafeIO::save($this->encodeConfig($this->config), $this->path);
     }
     protected function openConfig($path)
+    {
+        $content = '';
+        try
+        {
+            $content = $this->onlyOpenConfig($path);
+        }
+        catch (FileNotExistException $e)
+        {
+            $this->onFileNotExistException();
+            $content = $this->onlyOpenConfig($path);
+        }
+        return $content;
+    }
+    protected function onFileNotExistException()
+    {
+        $this->saveConfig();
+    }
+    protected function onlyOpenConfig($path)
     {
         return SafeIO::open($path);
     }

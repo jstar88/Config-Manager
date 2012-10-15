@@ -1,5 +1,6 @@
 <?php
-
+require_once (EXCEPTIONS . 'ItemNotUniqueException.php');
+require_once (EXCEPTIONS . 'XmlException.php');
 class XmlManager extends Manager
 {
 
@@ -56,7 +57,7 @@ class XmlManager extends Manager
     {
         $config = simplexml_load_string($content);
         if ($config === false)
-            throw new Exception('Error parsing xml file');
+            throw new XmlException('parsing xml file');
         return $config;
     }
     protected function encodeConfig($config)
@@ -64,9 +65,13 @@ class XmlManager extends Manager
         $content = $config->asXML();
         if ($content === false)
         {
-            throw new Exception('Error: there are syntax errors on xml file');
+            throw new XmlException('there are syntax errors inside xml file');
         }
         return $content;
+    }
+    protected function onFileNotExistException()
+    {      
+        $this->saveConfig($this->decodeConfig('<?xml version="1.0"?><configurations></configurations>'));
     }
 
     //------------------
@@ -95,13 +100,13 @@ class XmlManager extends Manager
             }
             else
             {
-                throw new Exception(sprintf('Item with id "%s" does not exists.', $config_name));
+                throw new ItemNotExistException($config_name);
             }
         }
         //if multiple result are returned so key is not unique
         elseif (count($result) !== 1)
         {
-            throw new Exception(sprintf('Item with id "%s" is not unique.', $config_name));
+            throw new ItemNotUniqueException($config_name);
         }
         list($result) = $result;
         return $result;
@@ -118,7 +123,7 @@ class XmlManager extends Manager
         $result = parent::getConfig()->xpath($query);
         if ($result === false)
         {
-            throw new Exception('there is an error in the xpath query');
+            throw new XmlException('there is an error in the xpath query');
         }
         return $result;
     }

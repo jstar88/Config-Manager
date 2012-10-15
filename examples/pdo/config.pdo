@@ -1,0 +1,15 @@
+<?php
+
+$config = array(
+    'db_type'        => 'mysql',
+    'db_host'        => 'localhost',
+    'db_name'        => 'game',
+    'user_name'      => 'root',
+    'user_password'  => '',
+    'driver_options' => array(),
+    'table'          => 'config',
+    'key'            => 'config_name',
+    'value'          => 'config_value'
+    );
+
+?>
