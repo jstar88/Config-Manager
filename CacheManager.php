@@ -8,7 +8,8 @@ class CacheManager implements ExtensionManager
     {
         $this->primitive = $primitive;
         $this->cache = $cache;
-        $this->cache->add($this->primitive->asArray());
+        if ($this->cache->asArray() === null)
+            $this->cache->add($this->primitive->asArray());
     }
     public function set($key, $value = false)
     {

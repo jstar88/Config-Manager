@@ -9,7 +9,7 @@ class Manager implements ExtensionManager
     public function __construct($path,ExtensionManager $driver = null)
     {
         $this->path = $path;
-        $this->config=array();
+        $this->config=null;
     }
 
     //----  methods of interfaces ----
@@ -128,7 +128,7 @@ class Manager implements ExtensionManager
     }
     protected function checkParse()
     {
-        if (!empty($this->config))
+        if ($this->config !== null)
             return;
         $this->config = $this->decodeConfig($this->openConfig($this->path));
         ConfigManager::incrementParseCount(__class__);
