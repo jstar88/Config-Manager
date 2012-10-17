@@ -153,11 +153,11 @@ Some types of markup language require to follow conventions to work on ConfigMan
     <configurations>
 ```
 * _PHP_: 
- Must have defined a variable _$config_ :
+ Must _return_ an  _array_ :
 
 ``` php
         <?php
-         $config=array(
+         return array(
          'a key' => 'a value'
          );
         ?>
