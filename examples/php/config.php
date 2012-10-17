@@ -1,4 +1,4 @@
-<?php $config = array (
+<?php return array (
   'wines' => 
   array (
     0 => 'merlot',
