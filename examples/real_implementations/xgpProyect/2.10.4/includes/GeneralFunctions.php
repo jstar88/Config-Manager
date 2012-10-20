@@ -27,15 +27,15 @@ function unset_vars ( $prefix )
 function read_config ( $config_name = '' , $all = FALSE )
 {
     $path = XGP_ROOT.'includes'.DIRECTORY_SEPARATOR.'xml'.DIRECTORY_SEPARATOR.'config';
-	$configs = ConfigManager::getInstance ( "$path.xml","$path.php" );
+	$config = ConfigManager::getInstance ( "$path.xml","$path.php" );
 
 	if ( $all )
 	{
-		return $configs->asArray();
+		return $config->asArray();
 	}
 	else
 	{
-		return $configs->get($config_name);
+		return $config->get($config_name);
 	}
 
 }
@@ -44,7 +44,7 @@ function read_config ( $config_name = '' , $all = FALSE )
 function update_config ( $config_name, $config_value )
 {
     $path = XGP_ROOT.'includes'.DIRECTORY_SEPARATOR.'xml'.DIRECTORY_SEPARATOR.'config';
-	$configs = ConfigManager::getInstance ( "$path.xml","$path.php" );    
+	$config = ConfigManager::getInstance ( "$path.xml","$path.php" );    
     $config->set($config_name,$config_value);
 }
 
@@ -52,14 +52,14 @@ function update_config ( $config_name, $config_value )
 function add_config ( $config_name, $config_value )
 {
     $path = XGP_ROOT.'includes'.DIRECTORY_SEPARATOR.'xml'.DIRECTORY_SEPARATOR.'config';
-	$configs = ConfigManager::getInstance ( "$path.xml","$path.php" );    
+	$config = ConfigManager::getInstance ( "$path.xml","$path.php" );    
     $config->add($config_name,$config_value);
 }
 //DELETE CONFIGURATIONS [NEW]
 function delete_config($config_name)
 {
     $path = XGP_ROOT.'includes'.DIRECTORY_SEPARATOR.'xml'.DIRECTORY_SEPARATOR.'config';
-	$configs = ConfigManager::getInstance ( "$path.xml","$path.php" );    
+	$config = ConfigManager::getInstance ( "$path.xml","$path.php" );    
     $config->delete($config_name);    
 }
 
