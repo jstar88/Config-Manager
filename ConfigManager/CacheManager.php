@@ -1,5 +1,9 @@
 <?php
 
+namespace ConfigManager;
+
+use \ConfigManager\Interfaces\ExtensionManager as ExtensionManager;
+
 class CacheManager implements ExtensionManager
 {
     private $primitive;
@@ -8,7 +12,8 @@ class CacheManager implements ExtensionManager
     {
         $this->primitive = $primitive;
         $this->cache = $cache;
-        if ($this->cache->asArray() === null)
+        $content =$this->cache->asArray();
+        if ( empty($content))
             $this->cache->add($this->primitive->asArray());
     }
     public function set($key, $value = false)

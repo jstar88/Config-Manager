@@ -1,4 +1,7 @@
 <?php
+namespace ConfigManager\Managers;
+
+use \ConfigManager\Utils\DataFormat as DataFormat;
 
 class IniManager extends Manager
 {

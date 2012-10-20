@@ -1,9 +1,12 @@
 <?php
-require_once (EXCEPTIONS.'FileNotExistException.php');
-require_once (EXCEPTIONS.'FileNotReadableException.php');
-require_once (EXCEPTIONS.'FileNotWritableException.php');
-define('WAIT_FOR',200000);
-define('PERMISSIONS', 0664);
+namespace ConfigManager\Utils;
+
+use \ConfigManager\Exceptions\FileNotExistException as FileNotExistException;
+use \ConfigManager\Exceptions\FileNotReadableException as FileNotReadableException;
+use \ConfigManager\Exceptions\FileNotWritableException as FileNotWritableException;
+
+define(__NAMESPACE__.'\WAIT_FOR',200000);
+define(__NAMESPACE__.'\PERMISSIONS', 0664);
 class SafeIO
 {
     public static function open($path)

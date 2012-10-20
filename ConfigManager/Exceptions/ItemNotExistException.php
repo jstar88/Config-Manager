@@ -1,6 +1,6 @@
 <?php
-
-class ItemNotExistException extends Exception
+namespace ConfigManager\Exceptions;
+class ItemNotExistException extends \Exception
 {
     public function __construct($id)
     {

@@ -1,6 +1,6 @@
 <?php
-
-class FileNotExistException extends Exception
+namespace ConfigManager\Exceptions;
+class FileNotExistException extends \Exception
 {
     public function __construct($path)
     {

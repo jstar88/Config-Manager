@@ -1,7 +1,12 @@
 <?php
+namespace ConfigManager\Managers;
 
-require_once (MANAGERS . 'PhpManager.php');
-require_once (EXCEPTIONS . 'ItemNotUniqueException.php');
+use \ConfigManager\Interfaces\ExtensionManager as ExtensionManager;
+use \ConfigManager\Exceptions\ItemNotUniqueException as ItemNotUniqueException;
+use \ConfigManager\Exceptions\ItemNotExistException as ItemNotExistException;
+use \ConfigManager\ConfigManager as ConfigManager;
+use \PDO as PDO;
+
 class PdoManager extends Manager
 {
     private $driver;
@@ -167,12 +172,12 @@ class PdoManager extends Manager
     {
         if($this->debug_on)
         {
-            $this->debug[]=$sql;
+            ConfigManager::debug(__CLASS__,$sql);
         }
     }
     public function showDebug()
     {
-        echo implode('<br>',$this->debug);
+        echo implode('<br>'.PHP_EOL,ConfigManager::$debug[__CLASS__]['trace']);
     }
     //---- override ----
     protected function checkExist($key)
@@ -182,6 +187,10 @@ class PdoManager extends Manager
     protected function checkNotExist($key)
     {
         //do nothing
+    }
+    protected function checkFileViolation($lastEdit)
+    {
+        //do nothing    
     }
 
 }

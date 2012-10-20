@@ -1,8 +1,0 @@
-{
-   "foods" : [
-      "pizza",
-      "spaghetti",
-      [ "hamburger", "kitchen" ]
-   ],
-   "str" : "hello world!"
-}

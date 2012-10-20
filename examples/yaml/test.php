@@ -1,8 +1,8 @@
 <?php
 
 include ('../../ConfigManager.php');
-$config=ConfigManager::getInstance('config.yaml', 'cache.php');
+$config=ConfigManager::getInstance('config.yaml','cache.php');
 
-$wines=$config->get('wines');
-var_export($wines);
+if(!$config->exist('wines'))$wines=$config->add('wines','cabernet');
+echo $config->get('wines');
 ?>

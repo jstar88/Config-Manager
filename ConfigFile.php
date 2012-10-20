@@ -1,13 +1,9 @@
 <?php
-class ConfigFile
+
+require_once (dirname(__file__) . str_replace('/', DIRECTORY_SEPARATOR, '/ConfigManager/ConfigFile.php'));
+class ConfigFile extends \ConfigManager\ConfigFile
 {
-    public $dataPath;
-    public $driverPath;
-    public $cacheDriverPath;
-    
-    public function getId()
-    {
-        return $this->dataPath.$this->driverPath.$this->cacheDriverPath;
-    }
+
 }
+
 ?>

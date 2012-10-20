@@ -1,5 +1,6 @@
 <?php
-// tutti i metodi devono essere indipendenti,cioè devono caricare,analizzare e salvare il file di configurazione se serve.
+namespace ConfigManager\Interfaces;
+
 interface ExtensionManager
 {
     public function set($key, $value=false);

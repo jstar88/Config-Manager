@@ -1,6 +1,6 @@
 <?php
-
-class ItemNotUniqueException extends Exception
+namespace ConfigManager\Exceptions;
+class ItemNotUniqueException extends \Exception
 {
     public function __construct($id)
     {

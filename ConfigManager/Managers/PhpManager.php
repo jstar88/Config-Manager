@@ -1,6 +1,8 @@
 <?php
+namespace ConfigManager\Managers;
 
-require_once (EXCEPTIONS . 'FileNotExistException.php');
+use \ConfigManager\Exceptions\FileNotExistException as FileNotExistException;
+
 class PhpManager extends Manager
 {
     protected function onlyOpenConfig($path)

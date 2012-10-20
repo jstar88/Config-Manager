@@ -1,6 +1,6 @@
 <?php
-
-class ItemAlreadyExistException extends Exception
+namespace ConfigManager\Exceptions;
+class ItemAlreadyExistException extends \Exception
 {
     public function __construct($id)
     {

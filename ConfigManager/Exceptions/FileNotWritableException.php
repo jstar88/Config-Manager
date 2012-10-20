@@ -1,6 +1,6 @@
 <?php
-
-class FileNotWritableException extends Exception
+namespace ConfigManager\Exceptions;
+class FileNotWritableException extends \Exception
 {
     public function __construct($path)
     {

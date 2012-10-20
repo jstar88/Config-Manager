@@ -1,6 +1,10 @@
 <?php
-require_once (EXCEPTIONS . 'ItemNotUniqueException.php');
-require_once (EXCEPTIONS . 'XmlException.php');
+namespace ConfigManager\Managers;
+
+use \ConfigManager\Utils\DataFormat as DataFormat;
+use \ConfigManager\Exceptions\XmlException as XmlException;
+use \ConfigManager\Exceptions\ItemNotExistException as ItemNotExistException;
+use \ConfigManager\Exceptions\ItemNotUniqueException as ItemNotUniqueException;
 class XmlManager extends Manager
 {
 

@@ -1,6 +1,6 @@
 <?php
-
-class FileNotReadableException extends Exception
+namespace ConfigManager\Exceptions;
+class FileNotReadableException extends \Exception
 {
     public function __construct($path)
     {

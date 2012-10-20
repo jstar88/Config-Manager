@@ -1,6 +1,6 @@
 <?php
-
-class IllegalArgumentException extends Exception
+namespace ConfigManager\Exceptions;
+class IllegalArgumentException extends \Exception
 {
     public function __construct($argument,$form)
     {

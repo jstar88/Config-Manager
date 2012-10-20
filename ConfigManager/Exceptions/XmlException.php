@@ -1,6 +1,6 @@
 <?php
-
-class XmlException extends Exception
+namespace ConfigManager\Exceptions;
+class XmlException extends \Exception
 {
     public function __construct($error)
     {

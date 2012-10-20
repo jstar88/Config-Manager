@@ -1,15 +1,27 @@
 <?php
-require_once (EXCEPTIONS . 'ItemAlreadyExistException.php');
-require_once (EXCEPTIONS . 'ItemNotExistException.php');
+
+namespace ConfigManager\Managers;
+
+use \ConfigManager\Interfaces\ExtensionManager as ExtensionManager;
+use \ConfigManager\Utils\SafeIO as SafeIO;
+use \ConfigManager\Exceptions\ItemNotExistException as ItemNotExistException;
+use \ConfigManager\Exceptions\ItemAlreadyExistException as ItemAlreadyExistException;
+use \ConfigManager\Exceptions\FileNotExistException as FileNotExistException;
+use \ConfigManager\Exceptions\FileViolationException as FileViolationException;
+use \ConfigManager\ConfigManager as ConfigManager;
+
+define(__namespace__ . '\FILETIME_TOLLERANCE', 3);
 class Manager implements ExtensionManager
 {
     private $config;
     private $path;
+    private $lastEdit;
 
-    public function __construct($path,ExtensionManager $driver = null)
+    public function __construct($path, ExtensionManager $driver = null)
     {
         $this->path = $path;
-        $this->config=null;
+        $this->config = array();
+        $this->lastEdit = 0;
     }
 
     //----  methods of interfaces ----
@@ -126,12 +138,23 @@ class Manager implements ExtensionManager
     {
         $this->config[$key] = $value;
     }
+    protected function checkFileViolation($lastEdit)
+    {
+        clearstatcache();
+        if ($lastEdit != 0 && filemtime($this->path) - $lastEdit > FILETIME_TOLLERANCE)
+        {
+            throw new FileViolationException($this->path);
+        }
+    }
     protected function checkParse()
     {
-        if ($this->config !== null)
+        if (!empty($this->config))
+        {
+            $this->checkFileViolation($this->lastEdit);
             return;
+        }
         $this->config = $this->decodeConfig($this->openConfig($this->path));
-        ConfigManager::incrementParseCount(__class__);
+        ConfigManager::debug(__class__);
     }
     protected function getPath()
     {
@@ -143,8 +166,10 @@ class Manager implements ExtensionManager
     }
     protected function saveConfig($config = null)
     {
-        if($config !== null) $this->config=$config;
-        SafeIO::save($this->encodeConfig($this->config), $this->path);
+        if ($config !== null)
+            $this->config = $config;
+        $this->onlySaveConfig($this->encodeConfig($this->config), $this->path);
+        $this->lastEdit = time();
     }
     protected function openConfig($path)
     {
@@ -167,6 +192,10 @@ class Manager implements ExtensionManager
     protected function onlyOpenConfig($path)
     {
         return SafeIO::open($path);
+    }
+    protected function onlySaveConfig($content, $path)
+    {
+        SafeIO::save($content, $path);
     }
     protected function decodeConfig($content)
     {

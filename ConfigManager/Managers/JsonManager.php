@@ -1,4 +1,5 @@
 <?php
+namespace ConfigManager\Managers;
 
 class JsonManager extends Manager
 {
