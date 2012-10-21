@@ -123,7 +123,7 @@ _config.pdo_
 ``` php
     <?php
 
-    $config = array(
+    return array(
       'db_type'        => 'mysql',
       'db_host'        => 'localhost',
       'db_name'        => 'game',
@@ -168,7 +168,7 @@ Some types of markup language require to follow conventions to work on ConfigMan
  ``` php
     <?php
 
-    $config = array(
+    return array(
       'db_type'        => 'mysql',
       'db_host'        => 'localhost',
       'db_name'        => 'game',
