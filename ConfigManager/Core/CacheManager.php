@@ -1,20 +1,22 @@
 <?php
 
-namespace ConfigManager;
+namespace ConfigManager\Core;
 
-use \ConfigManager\Interfaces\ExtensionManager as ExtensionManager;
+use \ConfigManager\Interfaces\Manager as Manager;
 
-class CacheManager implements ExtensionManager
+class CacheManager implements Manager
 {
     private $primitive;
     private $cache;
-    public function __construct(ExtensionManager $primitive, ExtensionManager $cache)
+    public function __construct(Manager $primitive, Manager $cache)
     {
         $this->primitive = $primitive;
         $this->cache = $cache;
-        $content =$this->cache->asArray();
-        if ( empty($content))
+        $content = $this->cache->asArray();
+        if (empty($content))
+        {
             $this->cache->add($this->primitive->asArray());
+        }
     }
     public function set($key, $value = false)
     {
@@ -25,6 +27,16 @@ class CacheManager implements ExtensionManager
     {
         $this->cache->add($key, $value);
         $this->primitive->add($key, $value);
+    }
+    public function replace($key, $value = false)
+    {
+        $this->cache->replace($key, $value);
+        $this->primitive->replace($key, $value);
+    }
+    public function merge(Manager $manager)
+    {
+        $this->cache->merge($manager);
+        $this->primitive->merge($manager);
     }
     public function get($key)
     {
@@ -43,7 +55,9 @@ class CacheManager implements ExtensionManager
         $this->cache->delete($key);
         $this->primitive->delete($key);
     }
+    public function getId()
+    {
+        return $this->cache->getId();
+    }
 
 }
-
-?>

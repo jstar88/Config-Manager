@@ -1,9 +1,11 @@
 <?php
-namespace ConfigManager\Managers;
+
+namespace ConfigManager\Modules\Ini;
 
 use \ConfigManager\Utils\DataFormat as DataFormat;
+use \ConfigManager\Modules\File\FileManager as FileManager;
 
-class IniManager extends Manager
+class IniManager extends FileManager
 {
     protected function get_config($key)
     {
@@ -18,7 +20,7 @@ class IniManager extends Manager
     }
     protected function assign($key, $value, $can_add)
     {
-        
+
         if (is_array($value))
         {
             $sectionName = $key;
@@ -29,16 +31,16 @@ class IniManager extends Manager
         {
             $sectionName = 'default';
         }
-        $value=DataFormat::serialize($value);
+        $value = DataFormat::serialize($value);
         if (parent::exist_config($sectionName))
         {
             $section = parent::get_config($sectionName);
             $section[$key] = $value;
-            parent::assign($sectionName, $section,$can_add);
+            parent::assign($sectionName, $section, $can_add);
         }
         else
         {
-            parent::assign($sectionName, array($key => $value),$can_add);
+            parent::assign($sectionName, array($key => $value), $can_add);
         }
 
 
@@ -74,10 +76,14 @@ class IniManager extends Manager
         }
         $section = parent::get_config($sectionName);
         unset($section[$key]);
-        if(empty($section))
+        if (empty($section))
+        {
             parent::delete_config($sectionName);
+        }
         else
-            parent::assign($sectionName, $section,true);
+        {
+            parent::assign($sectionName, $section, true);
+        }
     }
     protected function decodeConfig($content)
     {
@@ -105,10 +111,16 @@ class IniManager extends Manager
                         }
                     }
                     else
+                    {
                         if ($elem2 == "")
+                        {
                             $content .= $key2 . " = \n";
+                        }
                         else
+                        {
                             $content .= $key2 . " = \"" . $elem2 . "\"\n";
+                        }
+                    }
                 }
             }
         }
@@ -124,17 +136,18 @@ class IniManager extends Manager
                     }
                 }
                 else
+                {
                     if ($elem == "")
+                    {
                         $content .= $key2 . " = \n";
+                    }
                     else
+                    {
                         $content .= $key2 . " = \"" . $elem . "\"\n";
+                    }
+                }
             }
         }
-
         return $content;
     }
-
-
 }
-
-?>

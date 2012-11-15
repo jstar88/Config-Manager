@@ -1,12 +1,13 @@
 <?php
+
 namespace ConfigManager\Utils;
 
 class DataFormat
 {
-    static $link=false;
+    static $link = false;
     public static function unserialize($string)
     {
-        if(!self::$link)
+        if (!self::$link)
         {
             error_reporting(E_ALL ^ E_NOTICE);
             self::$link = true;
@@ -23,5 +24,3 @@ class DataFormat
         return $value;
     }
 }
-
-?>

@@ -1,14 +1,18 @@
 <?php
-namespace ConfigManager\Managers;
 
-use \ConfigManager\Exceptions\FileNotExistException as FileNotExistException;
+namespace ConfigManager\Modules\Php;
 
-class PhpManager extends Manager
+use \ConfigManager\Modules\File\Exceptions\FileNotExistException as FileNotExistException;
+use \ConfigManager\Modules\File\FileManager as FileManager;
+
+class PhpManager extends FileManager
 {
     protected function onlyOpenConfig($path)
     {
         if (!file_exists($path))
+        {
             throw new FileNotExistException($path);
+        }
         $config = require $path;
         return $config;
     }
@@ -20,5 +24,3 @@ class PhpManager extends Manager
         return $content;
     }
 }
-
-?>

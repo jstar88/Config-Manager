@@ -1,15 +1,15 @@
 <?php
 
 return array(
-    'db_type'        => 'mysql',
-    'db_host'        => 'localhost',
-    'db_name'        => 'game',
-    'user_name'      => 'root',
-    'user_password'  => '',
-    'driver_options' => array(),
-    'table'          => 'config',
-    'key'            => 'config_name',
-    'value'          => 'config_value'
+    'dbType'        => 'mysql',
+    'dbHost'        => 'localhost',
+    'dbName'        => 'game',
+    'userName'      => 'root',
+    'userPassword'  => '',
+    'driverOptions' => array(),
+    'tableName'     => 'config',
+    'keyColumn'     => 'config_name',
+    'valueColumn'   => 'config_value'
     );
 
 ?>

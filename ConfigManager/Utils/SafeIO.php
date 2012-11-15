@@ -1,18 +1,20 @@
 <?php
+
 namespace ConfigManager\Utils;
 
 use \ConfigManager\Exceptions\FileNotExistException as FileNotExistException;
 use \ConfigManager\Exceptions\FileNotReadableException as FileNotReadableException;
 use \ConfigManager\Exceptions\FileNotWritableException as FileNotWritableException;
 
-define(__NAMESPACE__.'\WAIT_FOR',200000);
-define(__NAMESPACE__.'\PERMISSIONS', 0664);
 class SafeIO
 {
+    const WAIT_FOR = 200000;
+    const PERMISSIONS = 0664;
+
     public static function open($path)
     {
         if (!file_exists($path))
-        {  
+        {
             throw new FileNotExistException($path);
         }
         if (!is_readable($path))
@@ -24,10 +26,10 @@ class SafeIO
         $cts = file_get_contents($path);
         flock($fo, LOCK_UN);
         fclose($fo);
-        chmod($path,PERMISSIONS);
+        chmod($path, self::PERMISSIONS);
         return $cts;
     }
-    public static function save($content,$path)
+    public static function save($content, $path)
     {
         if (file_exists($path) && !is_writable($path))
         {
@@ -45,11 +47,9 @@ class SafeIO
         else
         {
             fclose($fp);
-            usleep(WAIT_FOR);
-            $this->save($content);
+            usleep(self::WAIT_FOR);
+            self::save($content,$path);
         }
-        chmod($path,PERMISSIONS);
+        chmod($path, self::PERMISSIONS);
     }
 }
-
-?>

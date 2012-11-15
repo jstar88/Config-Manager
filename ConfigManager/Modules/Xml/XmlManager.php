@@ -1,13 +1,26 @@
 <?php
-namespace ConfigManager\Managers;
 
+namespace ConfigManager\Modules\Xml;
+
+use \ConfigManager\Interfaces\Manager as Manager;
 use \ConfigManager\Utils\DataFormat as DataFormat;
-use \ConfigManager\Exceptions\XmlException as XmlException;
+use \ConfigManager\Modules\Xml\Exceptions\XmlException as XmlException;
 use \ConfigManager\Exceptions\ItemNotExistException as ItemNotExistException;
 use \ConfigManager\Exceptions\ItemNotUniqueException as ItemNotUniqueException;
-class XmlManager extends Manager
-{
+use \ConfigManager\Modules\File\FileManager as FileManager;
 
+class XmlManager extends FileManager
+{
+    protected $name = 'name';
+    protected $value = 'value';
+    protected $config = 'config';
+    public function __construct(Manager $driver)
+    {
+        parent::__construct($driver);
+        $this->assignDriverValue('name');
+        $this->assignDriverValue('value');
+        $this->assignDriverValue('config');
+    }
     //----  methods of interfaces ----
     protected function get_config($key)
     {
@@ -36,7 +49,7 @@ class XmlManager extends Manager
         {
             $this->get_xml_entity($key);
         }
-        catch (exception $e)
+        catch (ItemNotExistException $e)
         {
             return false;
         }
@@ -44,18 +57,26 @@ class XmlManager extends Manager
     }
     //--------------------------------
 
-    //---- override ----
+//---- override ----
     protected function checkExist($key)
     {
         //do nothing
     }
-    protected function checkNotExist($key)
+    protected function checkAdd($key)
     {
         //do nothing
     }
-    protected function assign($key, $value, $can_add)
+    protected function checkSet($key)
     {
-        $this->get_xml_entity($key, $can_add)->value = DataFormat::serialize($value);
+        //do nothing
+    }
+    protected function checkReplace($key)
+    {
+        //do nothing
+    }
+    protected function assign($key, $value, $check)
+    {
+        $this->get_xml_entity($key, $check)->value = DataFormat::serialize($value);
     }
     protected function decodeConfig($content)
     {
@@ -74,7 +95,7 @@ class XmlManager extends Manager
         return $content;
     }
     protected function onFileNotExistException()
-    {      
+    {
         $this->saveConfig($this->decodeConfig('<?xml version="1.0"?><configurations></configurations>'));
     }
 
@@ -87,19 +108,19 @@ class XmlManager extends Manager
      * @param String $config_name: the key
      * @return SimpleXMLElement object
      */
-    private function get_xml_entity($config_name, $can_add = false)
+    private function get_xml_entity($config_name, $check = '')
     {
         //searching inside <configurations> and where config name=$config_name
-        $result = $this->doXpathQuery('/configurations/config[name="' . $config_name . '"]');
+        $result = $this->doXpathQuery("/configurations/config[{$this->name}=\"{$config_name}\"]");
         //if don't exist create it
 
         if (empty($result))
         {
-            if ($can_add)
+            if ($check == 'checkSet' || $check == 'checkAdd')
             {
-                $new_conf = parent::getConfig()->addChild('config');
-                $new_conf->addChild('name', $config_name);
-                $new_conf->addChild('value');
+                $new_conf = parent::getConfig()->addChild($this->config);
+                $new_conf->addChild($this->name, $config_name);
+                $new_conf->addChild($this->value);
                 $result = $new_conf;
             }
             else
@@ -132,5 +153,3 @@ class XmlManager extends Manager
         return $result;
     }
 }
-
-?>

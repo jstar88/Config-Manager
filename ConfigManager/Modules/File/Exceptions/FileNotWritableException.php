@@ -1,5 +1,6 @@
 <?php
-namespace ConfigManager\Exceptions;
+namespace ConfigManager\Modules\File\Exceptions;
+
 class FileNotWritableException extends \Exception
 {
     public function __construct($path)
@@ -7,5 +8,3 @@ class FileNotWritableException extends \Exception
         parent::__construct("Error: $path is not writable", 0);
     }
 }
-
-?>
