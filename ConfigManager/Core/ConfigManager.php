@@ -70,16 +70,24 @@ class ConfigManager
     {
         var_export(self::$debug);
     }
-
     private static function getDrivenManagerClass(Manager $driver)
     {
-        $class = self::getManagerClass($driver);
-        if ($class->exist('dataPath')) //if is a driver of a driver
+        $driver= self::getDrivenDriverClass($driver);
+        return self::getManagerClass($driver);
+    }
+    private static function getDrivenDriverClass(Manager $driver)
+    {
+        if ($driver->exist('driverPath'))
         {
-            $class = self::getDrivenManagerClass($class);
+            $driver = self::getDrivenManagerClass(self::getDriverClass($driver));
         }
-        return $class;
-
+        return $driver;
+    }
+    private static function getDriverClass(Manager $driver)
+    {
+        $ext = self::getExtension($driver->get('driverPath'));
+        $managerClass = "\\ConfigManager\\Modules\\$ext\\{$ext}Manager";
+        return new $managerClass($driver);    
     }
     private static function getManagerClass(Manager $driver)
     {
