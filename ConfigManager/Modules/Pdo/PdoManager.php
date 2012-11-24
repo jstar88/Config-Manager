@@ -5,11 +5,11 @@ namespace ConfigManager\Modules\Pdo;
 use \ConfigManager\Exceptions\ItemNotUniqueException as ItemNotUniqueException;
 use \ConfigManager\Exceptions\ItemNotExistException as ItemNotExistException;
 use \ConfigManager\Core\ConfigManager as ConfigManager;
-use \ConfigManager\Modules\File\FileManager as FileManager;
+use \ConfigManager\Modules\NonPersistentService\NonPersistentServiceManager as NonPersistentServiceManager;
 use \PDO as PDO;
 use \ConfigManager\Interfaces\Manager as Manager;
 
-class PdoManager extends FileManager
+class PdoManager extends NonPersistentServiceManager
 {
     private $addList = array();
     private $setList = array();
@@ -18,39 +18,11 @@ class PdoManager extends FileManager
     private $debug_on = true;
 
     protected $dbType, $dbHost, $dbName, $userName, $userPassword, $driverOptions, $tableName, $keyColumn, $valueColumn;
-    
-    //---- override ----
-    protected function checkExist($key)
-    {
-    }
-    protected function checkAdd($key)
-    {
-        //do nothing
-    }
-    protected function checkSet($key)
-    {
-        //do nothing
-    }
-    protected function checkReplace($key)
-    {
-        //do nothing
-    }
-    protected function checkFileViolation($lastEdit)
-    {
-        //do nothing
-    }
-    
+
+
     public function __construct(Manager $driver)
     {
-        $service = 'php';
-        if($driver->exist('service'))
-        {
-            $service = $driver->get('service');
-        }
-        $managerClass = "\\ConfigManager\\Modules\\$service\\{$service}Manager";
-        $driver = new $managerClass($driver);
-        parent::__construct($driver);
-        $assign = array(
+        $names = array(
             'dbType',
             'dbHost',
             'dbName',
@@ -60,26 +32,27 @@ class PdoManager extends FileManager
             'tableName',
             'keyColumn',
             'valueColumn');
-        foreach ($assign as $name)
-        {
-            $this->assignDriverValue($name);
-        }
+        $this->assignDriverValues($names);
     }
-    protected function openConfig($path)
+    protected function startService()
     {
         $dsn = "{$this->dbType}:host={$this->dbHost};dbname={$this->dbName}";
         $db = new PDO($dsn, $this->userName, $this->userPassword, $this->driverOptions);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $db;
+        $this->service = $db;
+    }
+    protected function stopService()
+    {
+        $this->service = null;
     }
     protected function get_config($key)
     {
-        $db = parent::getConfig();
+        $db = $this->service;
         $queryStr = "SELECT {$this->valueColumn} FROM {$this->tableName} WHERE {$this->keyColumn} = :key_name";
         $query = $db->prepare($queryStr);
         $query->bindValue(':key_name', $key, PDO::PARAM_STR);
         $query->execute();
-        $this->debug($queryStr.': '.__FUNCTION__.'='.$key);
+        $this->debug($queryStr . ': ' . __function__ . '=' . $key);
         $count = $query->rowCount();
         if ($count > 1)
         {
@@ -96,13 +69,13 @@ class PdoManager extends FileManager
     }
     protected function asArray_config()
     {
-        $db = parent::getConfig();
+        $db = $this->service;
         $queryStr = "SELECT {$this->keyColumn},{$this->valueColumn} FROM {$this->tableName}";
         $query = $db->prepare($queryStr);
         $query->execute();
         $rows = $query->fetchAll();
         $query->closeCursor();
-        $this->debug($queryStr.': '.__FUNCTION__);
+        $this->debug($queryStr . ': ' . __function__ );
         $return = array();
         foreach ($rows as $row)
         {
@@ -112,14 +85,14 @@ class PdoManager extends FileManager
     }
     protected function exist_config($key)
     {
-        $db = parent::getConfig();
+        $db = $this->service;
         $queryStr = "SELECT {$this->valueColumn} FROM {$this->tableName} WHERE {$this->keyColumn} = :key_name";
         $query = $db->prepare($queryStr);
         $query->bindValue(':key_name', $key, PDO::PARAM_STR);
         $query->execute();
         $count = $query->rowCount();
         $query->closeCursor();
-        $this->debug($queryStr.': '.__FUNCTION__.'='.$key);
+        $this->debug($queryStr . ': ' . __function__ . '=' . $key);
         if ($count > 0)
         {
             return true;
@@ -129,7 +102,7 @@ class PdoManager extends FileManager
     }
     protected function delete_config($key)
     {
-        $db = parent::getConfig();
+        $db = $this->service;
         $queryStr = "DELETE FROM {$this->tableName} WHERE {$this->keyColumn} = :key_name";
         $query = $db->prepare($queryStr);
         $query->bindValue(':key_name', $key, PDO::PARAM_STR);
@@ -143,7 +116,7 @@ class PdoManager extends FileManager
         {
             $this->addList[$key] = $value;
         }
-        elseif($check  == 'checkSet')
+        elseif ($check == 'checkSet')
         {
             $this->setList[$key] = $value;
         }
@@ -152,9 +125,10 @@ class PdoManager extends FileManager
             $this->replaceList[$key] = $value;
         }
     }
-    protected function saveConfig()
+    protected function write_config($config_name, $config_value, $check)
     {
-        $db = parent::getConfig();
+        parent::write_config($config_name, $config_value, $check);
+        $db = $this->service;
         $addQuery = '';
         $setQuery = '';
 
@@ -197,9 +171,9 @@ class PdoManager extends FileManager
             $db->rollBack();
             throw $e;
         }
-        $this->addList= array();
-        $this->setList=array();
-        $this->replaceList=array();
+        $this->addList = array();
+        $this->setList = array();
+        $this->replaceList = array();
     }
     private function debug($sql)
     {
@@ -212,6 +186,6 @@ class PdoManager extends FileManager
     {
         echo implode('<br>' . PHP_EOL, ConfigManager::$debug[__class__]['trace']);
     }
-    
+
 
 }
