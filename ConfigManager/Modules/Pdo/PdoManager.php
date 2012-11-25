@@ -8,6 +8,7 @@ use \ConfigManager\Core\ConfigManager as ConfigManager;
 use \ConfigManager\Modules\NonPersistentService\NonPersistentServiceManager as NonPersistentServiceManager;
 use \PDO as PDO;
 use \ConfigManager\Interfaces\Manager as Manager;
+use \ConfigManager\Modules\Pdo\Exceptions\PdoException as PdoException;
 
 class PdoManager extends NonPersistentServiceManager
 {
@@ -169,7 +170,7 @@ class PdoManager extends NonPersistentServiceManager
         catch (exception $e)
         {
             $db->rollBack();
-            throw $e;
+            throw new PdoException($e->getMessage());
         }
         $this->addList = array();
         $this->setList = array();

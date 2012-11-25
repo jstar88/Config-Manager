@@ -4,7 +4,6 @@ namespace ConfigManager\Core;
 
 use \ConfigManager\Interfaces\Manager as Manager;
 use \ConfigManager\Exceptions\IllegalArgumentException as IllegalArgumentException;
-use \ConfigManager\Modules\Php\PhpManager as PhpManager;
 use \ConfigManager\Modules\Simple\SimpleManager as SimpleManager;
 
 define(__namespace__ . '\LIBS', dirname(__file__) . DIRECTORY_SEPARATOR . 'Libs' . DIRECTORY_SEPARATOR);
@@ -73,32 +72,22 @@ class ConfigManager
     private static function getDrivenManagerClass(Manager $driver)
     {
         $driver= self::getDrivenDriverClass($driver);
-        return self::getManagerClass($driver);
+        return self::getClass($driver->get('dataPath'),$driver);
     }
     private static function getDrivenDriverClass(Manager $driver)
     {
         if ($driver->exist('driverPath'))
         {
-            $driver = self::getDrivenManagerClass(self::getDriverClass($driver));
+            $driver = self::getDrivenManagerClass(self::getClass($driver->get('driverPath'),$driver));
         }
         return $driver;
     }
-    private static function getDriverClass(Manager $driver)
-    {
-        $ext = self::getExtension($driver->get('driverPath'));
-        $managerClass = "\\ConfigManager\\Modules\\$ext\\{$ext}Manager";
-        return new $managerClass($driver);    
-    }
-    private static function getManagerClass(Manager $driver)
-    {
-        $ext = self::getExtension($driver->get('dataPath'));
-        $managerClass = "\\ConfigManager\\Modules\\$ext\\{$ext}Manager";
-        return new $managerClass($driver);
-    }
-    private static function getExtension($path)
+    private static function getClass(string $path, Manager $driver)
     {
         $ext = pathinfo($path,PATHINFO_EXTENSION);
-        $name = ucfirst(strtolower($ext));
-        return $name;
+        $ext = ucfirst(strtolower($ext));
+        $managerClass = "\\ConfigManager\\Modules\\$ext\\{$ext}Manager";
+        $managerClass = new $managerClass($driver);
+        return new ExceptionDecorator($managerClass,"\\ConfigManager\\Modules\\$ext\\Exceptions\\{$ext}Exception");             
     }
 }

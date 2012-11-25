@@ -84,7 +84,7 @@ class FileManager extends SimpleManager
     protected function checkFileViolation($lastEdit)
     {
         clearstatcache();
-        ConfigManager::debug(__class__, 'clearstatcache');
+        ConfigManager::debug(get_class($this), 'clearstatcache');
         if ($lastEdit != 0 && abs(filemtime($this->dataPath) - $lastEdit) > $this->fileTimeTol)
         {
             throw new FileViolationException($this->dataPath);
@@ -102,7 +102,7 @@ class FileManager extends SimpleManager
         }
         parent::setConfig($this->decodeConfig($this->openConfig($this->dataPath)));
         $this->initialized = true;
-        ConfigManager::debug(__class__, 'checkParse');
+        ConfigManager::debug(get_class($this), 'checkParse');
     }
     protected function getPath()
     {

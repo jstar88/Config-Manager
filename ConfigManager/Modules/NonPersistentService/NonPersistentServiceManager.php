@@ -8,6 +8,7 @@ class NonPersistentServiceManager extends ServiceManager
     public function set($key, $value = false)
     {
         $service = $this->startService();
+        $this->set_config($key, $value = false);
         $this->stopService();
     }
     public function add($key, $value = false)
