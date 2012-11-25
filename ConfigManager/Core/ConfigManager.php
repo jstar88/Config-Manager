@@ -82,7 +82,7 @@ class ConfigManager
         }
         return $driver;
     }
-    private static function getClass(string $path, Manager $driver)
+    public static function getClass(string $path, Manager $driver)
     {
         $ext = pathinfo($path,PATHINFO_EXTENSION);
         $ext = ucfirst(strtolower($ext));

@@ -49,7 +49,10 @@ class PersistentServiceManager extends ServiceManager
     public function getId()
     {
     }
-
+    protected function checkService()
+    {
+        
+    }
     protected function set_config($key, $value = false)
     {
 
@@ -79,10 +82,6 @@ class PersistentServiceManager extends ServiceManager
 
     }
     protected function merge_config(Manager $from)
-    {
-
-    }
-    public function __destruct()
     {
 
     }

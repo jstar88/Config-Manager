@@ -3,6 +3,7 @@
 namespace ConfigManager\Modules\Service;
 
 use \ConfigManager\Interfaces\Manager as Manager;
+use \ConfigManager\Core\ConfigManager as ConfigManager;
 
 class ServiceManager implements Manager
 {
@@ -15,8 +16,7 @@ class ServiceManager implements Manager
         {
             $service = $driver->get('service');
         }
-        $managerClass = "\\ConfigManager\\Modules\\$service\\{$service}Manager";
-        $this->driver = new $managerClass($driver);
+        $this->driver = ConfigManager::getClass('name.'.$service,$driver);
     }
     protected function assignDriverValues(array $names)
     {
@@ -33,7 +33,7 @@ class ServiceManager implements Manager
     }
     protected function startService()
     {
-        return $this->service;
+        
     }
     protected function stopService()
     {
