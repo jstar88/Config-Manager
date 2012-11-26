@@ -88,6 +88,6 @@ class ConfigManager
         $ext = ucfirst(strtolower($ext));
         $managerClass = "\\ConfigManager\\Modules\\$ext\\{$ext}Manager";
         $managerClass = new $managerClass($driver);
-        return new ExceptionDecorator($managerClass,"\\ConfigManager\\Modules\\$ext\\Exceptions\\{$ext}Exception");             
+        return new ExceptionDecorator($managerClass);             
     }
 }
