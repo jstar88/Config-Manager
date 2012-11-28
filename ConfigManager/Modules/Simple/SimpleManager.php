@@ -4,9 +4,9 @@ namespace ConfigManager\Modules\Simple;
 
 use \ConfigManager\Exceptions\ItemNotExistException as ItemNotExistException;
 use \ConfigManager\Exceptions\ItemAlreadyExistException as ItemAlreadyExistException;
-use \ConfigManager\Modules\NonPersistentService\NonPersistentServiceManager as NonPersistentServiceManager;
+use \ConfigManager\Modules\NonPersistentService\PersistentServiceManager as PersistentServiceManager;
 
-class SimpleManager extends NonPersistentServiceManager
+class SimpleManager extends PersistentServiceManager
 {
     protected $id;
 
