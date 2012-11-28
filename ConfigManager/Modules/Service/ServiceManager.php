@@ -9,6 +9,11 @@ class ServiceManager implements Manager
 {
     protected $driver;
     protected $service;
+    protected $addList = array();
+    protected $setList = array();
+    protected $replaceList = array();
+    protected $id;
+
     public function __construct(Manager $driver)
     {
         $service = 'php';
@@ -16,30 +21,45 @@ class ServiceManager implements Manager
         {
             $service = $driver->get('service');
         }
-        $this->driver = ConfigManager::getClass('name.'.$service,$driver);
-    }
-    protected function assignDriverValues(array $names)
-    {
-        foreach ($names as $name)
-        {
-            $this->assignDriverValue($name);
-        }
-    }
-    protected function assignDriverValue($name)
-    {
-        if ($this->driver == null || !$this->driver->exist($name))
-            return;
-        $this->{$name} = $this->driver->get($name);
-    }
-    protected function startService()
-    {
-        
-    }
-    protected function stopService()
-    {
-
+        $this->driver = ConfigManager::getClass('name.' . $service, $driver);
     }
 
+    public function set($key, $value = false)
+    {
+        $this->write_config($key, $value, 'checkSet');
+    }
+    public function add($key, $value = false)
+    {
+        $this->write_config($key, $value, 'checkAdd');
+    }
+    public function replace($key, $value = false)
+    {
+        $this->write_config($key, $value, 'checkReplace');
+    }
+    public function get($key)
+    {
+        return $this->get_config($key);
+    }
+    public function asArray()
+    {
+        return $this->asArray_config();
+    }
+    public function exist($key)
+    {
+        return $this->exist_config($key);
+    }
+    public function delete($key)
+    {
+        $this->delete_config($key);
+    }
+    public function merge(Manager $from)
+    {
+        $this->merge_config($from);
+    }
+    public function getId()
+    {
+        return $this->id;
+    }
     protected function write_config($config_name, $config_value, $check)
     {
 
@@ -57,36 +77,60 @@ class ServiceManager implements Manager
     }
     protected function assign($key, $value, $check)
     {
+        if ($check == 'checkAdd')
+        {
+            $this->addList[$key] = $value;
+        }
+        elseif ($check == 'checkSet')
+        {
+            $this->setList[$key] = $value;
+        }
+        else
+        {
+            $this->replaceList[$key] = $value;
+        }
     }
-    public function set($key, $value = false)
+    protected function get_config($key)
     {
-        $this->write_config($key,$value,'checkSet');
+
     }
-    public function add($key, $value = false)
+    protected function asArray_config()
     {
-        $this->write_config($key,$value,'checkAdd');
+
     }
-    public function replace($key, $value = false)
+    protected function exist_config($key)
     {
-        $this->write_config($key,$value,'checkReplace');
+
     }
-    public function get($key)
+    protected function delete_config($key)
     {
+
     }
-    public function asArray()
+    protected function merge_config(Manager $from)
     {
+        $this->add($from->asArray());
     }
-    public function exist($key)
+
+    protected function assignDriverValues(array $names)
     {
+        foreach ($names as $name)
+        {
+            $this->assignDriverValue($name);
+        }
     }
-    public function delete($key)
+    protected function assignDriverValue($name)
     {
+        if ($this->driver == null || !$this->driver->exist($name))
+            return;
+        $this->{$name} = $this->driver->get($name);
     }
-    public function merge(Manager $from)
+    protected function startService()
     {
+
     }
-    public function getId()
+    protected function stopService()
     {
+
     }
 
 }

@@ -12,14 +12,8 @@ use \ConfigManager\Modules\Pdo\Exceptions\PdoException as PdoException;
 
 class PdoManager extends NonPersistentServiceManager
 {
-    private $addList = array();
-    private $setList = array();
-    private $replaceList = array();
-    private $debug = array();
     private $debug_on = true;
-
     protected $dbType, $dbHost, $dbName, $userName, $userPassword, $driverOptions, $tableName, $keyColumn, $valueColumn;
-
 
     public function __construct(Manager $driver)
     {
@@ -35,9 +29,13 @@ class PdoManager extends NonPersistentServiceManager
             'valueColumn');
         $this->assignDriverValues($names);
     }
+    public function getId()
+    {
+        return "{$this->dbType}:host={$this->dbHost};dbname={$this->dbName}";
+    }
     protected function startService()
     {
-        $dsn = "{$this->dbType}:host={$this->dbHost};dbname={$this->dbName}";
+        $dsn = $this->getId();
         $db = new PDO($dsn, $this->userName, $this->userPassword, $this->driverOptions);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->service = $db;
@@ -110,21 +108,6 @@ class PdoManager extends NonPersistentServiceManager
         $query->execute();
         $query->closeCursor();
         $this->debug($queryStr);
-    }
-    protected function assign($key, $value, $check)
-    {
-        if ($check == 'checkAdd')
-        {
-            $this->addList[$key] = $value;
-        }
-        elseif ($check == 'checkSet')
-        {
-            $this->setList[$key] = $value;
-        }
-        else
-        {
-            $this->replaceList[$key] = $value;
-        }
     }
     protected function write_config($config_name, $config_value, $check)
     {

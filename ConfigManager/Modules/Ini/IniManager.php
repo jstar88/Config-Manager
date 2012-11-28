@@ -18,7 +18,7 @@ class IniManager extends FileManager
         return DataFormat::unserialize($value);
 
     }
-    protected function assign($key, $value, $can_add)
+    protected function assign($key, $value, $check)
     {
 
         if (is_array($value))
@@ -36,11 +36,11 @@ class IniManager extends FileManager
         {
             $section = parent::get_config($sectionName);
             $section[$key] = $value;
-            parent::assign($sectionName, $section, $can_add);
+            parent::assign($sectionName, $section, $check);
         }
         else
         {
-            parent::assign($sectionName, array($key => $value), $can_add);
+            parent::assign($sectionName, array($key => $value), $check);
         }
 
 

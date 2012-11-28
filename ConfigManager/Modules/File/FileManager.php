@@ -29,56 +29,26 @@ class FileManager extends SimpleManager
         $this->initialized = false;
         $this->id = $this->dataPath;
     }
-    protected function assignDriverValue($name)
-    {
-        if ($this->driver == null || !$this->driver->exist($name))
-            return;
-        $this->{$name} = $this->driver->get($name);
-    }
     //----  methods of interfaces ----
     public function set($key, $value = false)
     {
-        $this->checkParse();
         parent::set($key, $value);
         $this->saveConfig();
     }
     public function add($key, $value = false)
     {
-        $this->checkParse();
         parent::add($key, $value);
         $this->saveConfig();
     }
     public function replace($key, $value = false)
     {
-        $this->checkParse();
         parent::replace($key);
         $this->saveConfig();
     }
-    public function get($key)
-    {
-        $this->checkParse();
-        return parent::get($key);
-    }
-    public function asArray()
-    {
-        $this->checkParse();
-        return parent::asArray();
-    }
-    public function exist($key)
-    {
-        $this->checkParse();
-        return parent::exist($key);
-    }
     public function delete($key)
     {
-        $this->checkParse();
         parent::delete($key);
         $this->saveConfig();
-    }
-    public function merge(Manager $from)
-    {
-        $this->checkParse();
-        parent::merge($from);
     }
     //---------------------------
     protected function checkFileViolation($lastEdit)
@@ -90,7 +60,7 @@ class FileManager extends SimpleManager
             throw new FileViolationException($this->dataPath);
         }
     }
-    protected function checkParse()
+    protected function checkService()
     {
         if ($this->initialized)
         {
@@ -102,7 +72,7 @@ class FileManager extends SimpleManager
         }
         parent::setConfig($this->decodeConfig($this->openConfig($this->dataPath)));
         $this->initialized = true;
-        ConfigManager::debug(get_class($this), 'checkParse');
+        ConfigManager::debug(get_class($this), 'checkService');
     }
     protected function getPath()
     {

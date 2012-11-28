@@ -2,95 +2,64 @@
 
 namespace \ConfigManager\Modules\NonPersistentService;
 use \ConfigManager\Modules\Service\ServiceManager as ServiceManager;
+use \ConfigManager\Interfaces\Manager as Manager;
 
 class NonPersistentServiceManager extends ServiceManager
 {
+    public function __construct(Manager $driver)
+    {
+        parent::__construct($driver);
+    }
     public function set($key, $value = false)
     {
         $service = $this->startService();
-        $this->set_config($key, $value = false);
+        parent::set($key,$value);
         $this->stopService();
     }
     public function add($key, $value = false)
     {
         $this->startService();
-        $this->add_config($key, $value = false);
+        parent::add($key,$value);
         $this->stopService();
     }
     public function replace($key, $value = false)
     {
         $this->startService();
-        $this->replace_config($key, $value = false);
+        parent::replace($key,$value);
         $this->stopService();
     }
     public function get($key)
     {
         $this->startService();
-        $value = $this->get_config($key);
+        $value = parent::get($key);
         $this->stopService();
         return $value;
     }
     public function asArray()
     {
         $this->startService();
-        $config = $this->asArray_config();
+        $config = parent::asArray();
         $this->stopService();
         return $config;
     }
     public function exist($key)
     {
         $this->startService();
-        $exist = $this->exist_config($key);
+        $exist = parent::exist($key);
         $this->stopService();
         return $exist;
     }
     public function delete($key)
     {
         $this->startService();
-        $this->delete_config($key);
+        parent::delete($key);
         $this->stopService();
     }
     public function merge(Manager $from)
     {
         $this->startService();
-        $this->merge_config($from);
+        parent::merge($from);
         $this->stopService();
-    }
-    public function getId()
-    {
-    }
-
-    protected function set_config($key, $value = false)
-    {
-
-    }
-    protected function add_config($key, $value = false)
-    {
-
-    }
-    protected function replace_config($key, $value = false)
-    {
-
-    }
-    protected function get_config($key)
-    {
-
-    }
-    protected function asArray_config()
-    {
-
-    }
-    protected function exist_config($key)
-    {
-
-    }
-    protected function delete_config($key)
-    {
-
-    }
-    protected function merge_config(Manager $from)
-    {
-
     }
 
 }
