@@ -2,15 +2,30 @@
 
 namespace ConfigManager\Utils;
 
-use \ConfigManager\Exceptions\FileNotExistException as FileNotExistException;
-use \ConfigManager\Exceptions\FileNotReadableException as FileNotReadableException;
-use \ConfigManager\Exceptions\FileNotWritableException as FileNotWritableException;
+use \ConfigManager\Modules\File\Exceptions\FileNotExistException as FileNotExistException;
+use \ConfigManager\Modules\File\Exceptions\FileNotReadableException as FileNotReadableException;
+use \ConfigManager\Modules\File\Exceptions\FileNotWritableException as FileNotWritableException;
 
+/**
+ * SafeIO
+ * Class that read and write content to a file
+ * @package Config-Manager
+ * @author Covolo Nicola
+ * @copyright 2012
+ * @version 4.0.6
+ * @access public
+ */
 class SafeIO
 {
     const WAIT_FOR = 200000;
     const PERMISSIONS = 0664;
 
+    /**
+     * SafeIO::open()
+     * Read the content from a file located as the path.
+     * @param string $path
+     * @return string 
+     */
     public static function open($path)
     {
         if (!file_exists($path))
@@ -29,6 +44,15 @@ class SafeIO
         chmod($path, self::PERMISSIONS);
         return $cts;
     }
+    
+    
+    /**
+     * SafeIO::save()
+     * Save the content into a file located as the path.
+     * @param string $content
+     * @param string $path
+     * @return null
+     */
     public static function save($content, $path)
     {
         if (file_exists($path) && !is_writable($path))
