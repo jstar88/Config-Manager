@@ -5,18 +5,19 @@ namespace ConfigManager\Modules\Plugins\Pdo;
 use \ConfigManager\Exceptions\ItemNotUniqueException as ItemNotUniqueException;
 use \ConfigManager\Exceptions\ItemNotExistException as ItemNotExistException;
 use \ConfigManager\Core\ConfigManager as ConfigManager;
-use \ConfigManager\Modules\System\NonPersistentService\NonPersistentServiceManager as NonPersistentServiceManager;
-use \PDO as PDO;
-use \ConfigManager\Interfaces\Manager as Manager;
+use \ConfigManager\Modules\System\ExternalNonPersistentService\ExternalNonPersistentServiceManager as ExternalNonPersistentServiceManager;
 use \ConfigManager\Modules\Plugins\Pdo\Exceptions\PdoException as PdoException;
+use \ConfigManager\Interfaces\Manager as Manager;
+use \PDO as PDO;
 
-class PdoManager extends NonPersistentServiceManager
+class PdoManager extends ExternalNonPersistentServiceManager
 {
     private $debug_on = true;
     protected $dbType, $dbHost, $dbName, $userName, $userPassword, $driverOptions, $tableName, $keyColumn, $valueColumn;
 
     public function __construct(Manager $driver)
     {
+        parent::__construct($driver);
         $names = array(
             'dbType',
             'dbHost',

@@ -1,7 +1,15 @@
 <?php
 
-require_once (dirname(__file__) . str_replace('/', DIRECTORY_SEPARATOR, '/ConfigManager/Modules/System/Simple/SimpleManager.php'));
-class SimpleManager extends \ConfigManager\Modules\System\Simple\SimpleManager
+require_once ('Autoloaded.php');
+class SimpleManager extends Autoloaded
 {
-
+    public function __construct()
+    {
+        $class = parent::autoloadedCall(array($this, 'getInstance'));
+        parent::__construct($class);
+    }
+    public function getInstance()
+    {
+        return new \ConfigManager\Modules\System\Simple\SimpleManager();
+    }
 }

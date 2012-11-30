@@ -3,7 +3,6 @@
 namespace ConfigManager\Modules\System\Service;
 
 use \ConfigManager\Interfaces\Manager as Manager;
-use \ConfigManager\Core\ConfigManager as ConfigManager;
 
 class ServiceManager implements Manager
 {
@@ -16,20 +15,7 @@ class ServiceManager implements Manager
 
     public function __construct(Manager $driver = null)
     {
-        if ($driver !== null)
-        {
-            if ($driver->exist('service'))
-            {
-                $service = $driver->get('service');
-                $path = $driver->get('dataPath');
-                $path = substr_replace($path, $service, strrpos($path, '.') + 1);
-                $this->driver = ConfigManager::getClass($path, $driver);
-            }
-            else
-            {
-                $this->driver = $driver;
-            }
-        }
+        $this->driver = $driver;
     }
 
     public function set($key, $value = false)
