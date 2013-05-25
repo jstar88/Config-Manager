@@ -50,6 +50,10 @@ class FileManager extends SimpleManager
         parent::delete($key);
         $this->saveConfig();
     }
+    public function set_not_save($key, $value = false)
+    {
+        parent::set($key, $value);    
+    }
     //---------------------------
     protected function checkFileViolation($lastEdit)
     {

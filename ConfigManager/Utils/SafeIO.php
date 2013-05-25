@@ -2,9 +2,9 @@
 
 namespace ConfigManager\Utils;
 
-use \ConfigManager\Modules\File\Exceptions\FileNotExistException as FileNotExistException;
-use \ConfigManager\Modules\File\Exceptions\FileNotReadableException as FileNotReadableException;
-use \ConfigManager\Modules\File\Exceptions\FileNotWritableException as FileNotWritableException;
+use \ConfigManager\Modules\System\File\Exceptions\FileNotExistException as FileNotExistException;
+use \ConfigManager\Modules\System\File\Exceptions\FileNotReadableException as FileNotReadableException;
+use \ConfigManager\Modules\System\File\Exceptions\FileNotWritableException as FileNotWritableException;
 
 /**
  * SafeIO

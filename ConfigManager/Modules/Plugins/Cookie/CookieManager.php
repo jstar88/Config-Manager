@@ -110,14 +110,14 @@ class CookieManager extends JsonManager
     }
     protected function checkFileViolation($lastEdit)
     {
-        if ($lastEdit != 0 && abs(parent::get_config(self::LAST_EDIT_KEY) - $lastEdit) > Manager::FILETIME_TOLLERANCE)
+        if ($lastEdit != 0 && abs(parent::get_config(self::LAST_EDIT_KEY) - $lastEdit) > $this->fileTimeTol)
         {
             throw new FileViolationException($this->cookieName);
         }
     }
     protected function saveConfig($config = null)
     {
-        parent::add_config(self::LAST_EDIT_KEY, time());
+        parent::set_not_save(self::LAST_EDIT_KEY, time());
         parent::saveConfig();
     }
     protected function onFileNotExistException()

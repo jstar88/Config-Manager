@@ -4,6 +4,7 @@ namespace ConfigManager\Modules\Plugins\Ini;
 
 use \ConfigManager\Utils\DataFormat as DataFormat;
 use \ConfigManager\Modules\System\File\FileManager as FileManager;
+use \ConfigManager\Exceptions\ItemNotExistException as ItemNotExistException;
 
 class IniManager extends FileManager
 {
@@ -14,6 +15,10 @@ class IniManager extends FileManager
             $key = array('default', $key);
         }
         $section = parent::get_config($key[0]);
+        if(!isset($section[$key[1]]))
+        {
+            throw new ItemNotExistException($key[1]);
+        }
         $value = $section[$key[1]];
         return DataFormat::unserialize($value);
 
@@ -34,7 +39,7 @@ class IniManager extends FileManager
         $value = DataFormat::serialize($value);
         if (parent::exist_config($sectionName))
         {
-            $section = parent::get_config($sectionName);
+            $section = $this->get_config($sectionName);
             $section[$key] = $value;
             parent::assign($sectionName, $section, $check);
         }
@@ -45,7 +50,7 @@ class IniManager extends FileManager
 
 
     }
-    protected function exist_config($key)
+   /* protected function exist_config($key)
     {
         if (is_array($key))
         {
@@ -58,11 +63,12 @@ class IniManager extends FileManager
         }
         if (parent::exist_config($sectionName))
         {
-            $section = parent::get_config($sectionName);
+            
+            $section =$this->service[$sectionName];
             return isset($section[$key]);
         }
         return false;
-    }
+    }*/
     protected function delete_config($key)
     {
         if (is_array($key))
@@ -74,7 +80,7 @@ class IniManager extends FileManager
         {
             $sectionName = 'default';
         }
-        $section = parent::get_config($sectionName);
+        $section = $this->get_config($sectionName);
         unset($section[$key]);
         if (empty($section))
         {
